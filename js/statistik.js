@@ -54,7 +54,7 @@ function renderStackedBar(canvasId, chartData, existingChart) {
 let charts = {};
 
 function renderAll(people) {
-  const attendingCats = ["Loppet", "Festen", "Båda"];
+  const attendingCats = ["Loppet", "Festen", "Båda", "Kommer inte"];
   const classCats = ["Fun Run", "Backyard", "Stafett"];
 
   charts.c1 = renderStackedBar("chart1",

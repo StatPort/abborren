@@ -38,6 +38,7 @@ function personBlockHtml(index) {
       <option value="Loppet">Jag kommer på loppet</option>
       <option value="Festen">Jag kommer på festen</option>
       <option value="Båda">Jag kommer på båda</option>
+      <option value="Kommer inte">Jag kommer inte alls tyvärr, hemsk ledsen</option>
     </select>
 
     <label for="class-${index}">Välj klass

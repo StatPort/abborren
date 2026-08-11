@@ -15,6 +15,17 @@
       <h1>Statistik om deltagarna</h1>
     </div>
 
+    <div class="card">
+      <h2>Deltagare</h2>
+      <table class="participant-list">
+        <thead>
+          <tr><th>Nickname</th><th>Ålder</th><th>Ort</th></tr>
+        </thead>
+        <tbody id="participant-rows"></tbody>
+      </table>
+      <p id="empty-msg" style="display:none;">Inga anmälningar än.</p>
+    </div>
+
     <div class="card chart-block">
       <h3>Jag kommer på... (nedbrutet på kön, %)</h3>
       <canvas id="chart1" height="200"></canvas>
@@ -33,17 +44,6 @@
     <div class="card chart-block">
       <h3>Klass (nedbrutet på ålder, %)</h3>
       <canvas id="chart4" height="200"></canvas>
-    </div>
-
-    <div class="card">
-      <h2>Deltagare</h2>
-      <table class="participant-list">
-        <thead>
-          <tr><th>Nickname</th><th>Ålder</th><th>Ort</th></tr>
-        </thead>
-        <tbody id="participant-rows"></tbody>
-      </table>
-      <p id="empty-msg" style="display:none;">Inga anmälningar än.</p>
     </div>
   </div>
 
