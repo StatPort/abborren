@@ -17,9 +17,9 @@ const POLLS = [
   },
   {
     id: "poll2",
-    question: "På fest gillar jag...",
+    question: "På fest gillar jag att...",
     options: [
-      "Att dansa när jag får feeling",
+      "Dansa",
       "Springa runt och snacka med alla jag känner och inte känner",
       "Samtala med några få människor",
       "Träffa nytt folk",
@@ -49,6 +49,10 @@ function pollCardHtml(poll) {
       ${optionsHtml}
       <button type="button" class="submit-btn poll-vote-btn" data-poll="${poll.id}">Rösta</button>
     </div>
+    <p id="voted-msg-${poll.id}" style="display:none;">
+      Du har redan röstat i den här webbläsaren.
+      <button type="button" class="secondary-btn" id="revote-${poll.id}">Ändra din röst</button>
+    </p>
     <canvas id="chart-${poll.id}" height="${chartHeight}" style="margin-top:16px;"></canvas>
   </div>`;
 }
@@ -112,9 +116,19 @@ function renderPollChart(poll, votes) {
 
 function setupPoll(poll) {
   const formEl = document.getElementById("form-" + poll.id);
+  const votedMsgEl = document.getElementById("voted-msg-" + poll.id);
+
+  function showVoted() {
+    formEl.style.display = "none";
+    votedMsgEl.style.display = "block";
+  }
+  function showForm() {
+    formEl.style.display = "block";
+    votedMsgEl.style.display = "none";
+  }
 
   if (AbborrenDB.hasVoted(poll.id)) {
-    formEl.style.display = "none";
+    showVoted();
   }
 
   AbborrenDB.subscribePollVotes(poll.id, (votes) => renderPollChart(poll, votes));
@@ -125,9 +139,15 @@ function setupPoll(poll) {
       alert("Välj minst ett alternativ innan du röstar.");
       return;
     }
-    await AbborrenDB.addPollVote(poll.id, checked.map((c) => c.value));
-    AbborrenDB.markVoted(poll.id);
-    formEl.style.display = "none";
+    const existingVoteId = AbborrenDB.getVoteId(poll.id);
+    const voteId = await AbborrenDB.addPollVote(poll.id, checked.map((c) => c.value), existingVoteId);
+    AbborrenDB.markVoted(poll.id, voteId);
+    showVoted();
+  });
+
+  document.getElementById("revote-" + poll.id).addEventListener("click", () => {
+    formEl.querySelectorAll(`input[name="${poll.id}"]`).forEach((cb) => { cb.checked = false; });
+    showForm();
   });
 }
 

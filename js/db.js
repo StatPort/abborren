@@ -73,18 +73,39 @@ const AbborrenDB = (function () {
   }
 
   // ---------- Polls ----------
-  // choices: array av valda alternativ (flerval tillåtet)
-  async function addPollVote(pollId, choices) {
+  // choices: array av valda alternativ (flerval tillåtet).
+  // existingVoteId: om satt, skriver över den rösten istället för att lägga till en ny
+  // (används av "Ändra din röst" så man inte kan rösta flera gånger).
+  async function addPollVote(pollId, choices, existingVoteId) {
     const vote = { pollId, choices, createdAt: new Date().toISOString() };
+
     if (useFirebase) {
-      await db.collection("pollVotes").add(vote);
-      return;
+      if (existingVoteId) {
+        await db.collection("pollVotes").doc(existingVoteId).set(vote);
+        return existingVoteId;
+      }
+      const ref = await db.collection("pollVotes").add(vote);
+      return ref.id;
     }
+
     const key = "pollVotes_" + pollId;
     const current = lsGet(key, []);
-    current.push(vote);
+    if (existingVoteId) {
+      const idx = current.findIndex((v) => v.id === existingVoteId);
+      if (idx !== -1) {
+        current[idx] = Object.assign({ id: existingVoteId }, vote);
+      } else {
+        current.push(Object.assign({ id: existingVoteId }, vote));
+      }
+      lsSet(key, current);
+      notify(key);
+      return existingVoteId;
+    }
+    const id = cryptoRandomId();
+    current.push(Object.assign({ id }, vote));
     lsSet(key, current);
     notify(key);
+    return id;
   }
 
   function subscribePollVotes(pollId, callback) {
@@ -102,10 +123,13 @@ const AbborrenDB = (function () {
   }
 
   function hasVoted(pollId) {
-    return localStorage.getItem("voted_" + pollId) === "yes";
+    return !!localStorage.getItem("voted_" + pollId);
   }
-  function markVoted(pollId) {
-    localStorage.setItem("voted_" + pollId, "yes");
+  function markVoted(pollId, voteId) {
+    localStorage.setItem("voted_" + pollId, voteId);
+  }
+  function getVoteId(pollId) {
+    return localStorage.getItem("voted_" + pollId);
   }
 
   function cryptoRandomId() {
@@ -119,6 +143,7 @@ const AbborrenDB = (function () {
     addPollVote,
     subscribePollVotes,
     hasVoted,
-    markVoted
+    markVoted,
+    getVoteId
   };
 })();
