@@ -5,13 +5,14 @@ const POLLS = [
     id: "poll1",
     question: "Vad fick dig att komma på festen?",
     options: [
-      "Jag älskar fest!",
-      "Jag hatar fest men blev tvingad.",
+      "Jag älskar fest",
+      "Jag hatar fest men blev tvingad",
       "Jag tyckte att det lät kul bara",
       "Jag älskar korv med bröd",
-      "Jag är här för att Matilda & Michael är världens härligaste människor och jag vill hänga med dem.",
-      "Jag vill springa världens roligaste lopp.",
-      "Jag vet inte, jag tycker det är lite läskigt."
+      "Jag är här för att Matilda & Michael är världens härligaste människor och jag vill hänga med dem",
+      "Jag vill springa världens roligaste lopp",
+      "Jag vet inte, jag tycker det är lite läskigt",
+      "Jag vill snacka politik"
     ]
   },
   {
@@ -20,11 +21,13 @@ const POLLS = [
     options: [
       "Att dansa när jag får feeling",
       "Springa runt och snacka med alla jag känner och inte känner",
-      "Alternativ 3 (kommer snart)",
-      "Alternativ 4 (kommer snart)",
-      "Alternativ 5 (kommer snart)",
-      "Alternativ 6 (kommer snart)",
-      "Alternativ 7 (kommer snart)"
+      "Samtala med några få människor",
+      "Träffa nytt folk",
+      "Hänga med vänner",
+      "Springa lopp",
+      "Sitta i ett hörn och tjura",
+      "Bada pool",
+      "Jag gillar inte fest"
     ]
   }
 ];
@@ -36,6 +39,8 @@ function pollCardHtml(poll) {
       ${escapeHtml(opt)}
     </label>`).join("");
 
+  const chartHeight = Math.max(280, poll.options.length * 55);
+
   return `
   <div class="card">
     <h2>${escapeHtml(poll.question)}</h2>
@@ -44,7 +49,7 @@ function pollCardHtml(poll) {
       ${optionsHtml}
       <button type="button" class="submit-btn poll-vote-btn" data-poll="${poll.id}">Rösta</button>
     </div>
-    <canvas id="chart-${poll.id}" height="280" style="margin-top:16px;"></canvas>
+    <canvas id="chart-${poll.id}" height="${chartHeight}" style="margin-top:16px;"></canvas>
   </div>`;
 }
 
