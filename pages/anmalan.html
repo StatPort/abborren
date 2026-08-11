@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anmäl dig här! – Abborren Backyard Ultra 2026</title>
+<link rel="icon" href="../assets/img/logo.png">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="../home.html">&larr; Tillbaka</a>
+    <div class="site-header">
+      <img class="logo" src="../assets/img/logo.png" alt="Abborren logga">
+      <h1>Anmäl dig här!</h1>
+    </div>
+
+    <form id="signup-form">
+      <div id="people-container"></div>
+
+      <button type="button" class="secondary-btn" id="add-person-btn">+ Lägg till fler folk</button>
+
+      <button type="submit" class="submit-btn">Skicka anmälan</button>
+    </form>
+  </div>
+
+  <footer class="site-footer">Abborren Backyard Ultra &middot; Est. 2025</footer>
+
+  <!-- Info-modal om klasser -->
+  <div class="modal-backdrop" id="class-info-backdrop">
+    <div class="modal">
+      <button class="modal-close" id="class-info-close">&times;</button>
+      <h3>Mer info om klasser</h3>
+      <p><strong>Fun Run</strong><br>Spring så många varv du kan, vill och orkar. Max 45 minuter.</p>
+      <p><strong>Backyard</strong><br>Tiden minskar för varje varv. Loppet pågår till alla åkt ut. Cirka 1 timme.</p>
+      <p><strong>Stafett</strong><br>Bilda ett lag. Minst två personer. Välj någon av klasserna ovan. Turas om.</p>
+    </div>
+  </div>
+
+  <!-- Bekräftelse-overlay -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+      <img class="trumpet left" src="../assets/img/trumpet.png" alt="">
+      <img class="trumpet right" src="../assets/img/trumpet.png" alt="">
+      <div class="speech-bubble">Vad kul, varmt välkomna!</div>
+      <br>
+      <img class="wiggle-logo" src="../assets/img/logo.png" alt="Abborren logga">
+      <br>
+      <button class="confirm-close" id="confirm-close-btn">Stäng</button>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>requireAuth("../index.html");</script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/fanfare.js"></script>
+  <script src="../js/anmalan.js"></script>
+</body>
+</html>

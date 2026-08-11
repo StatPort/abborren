@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abborren Backyard Ultra 2026 – Logga in</title>
+<link rel="icon" href="assets/img/logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="card login-card">
+      <div class="site-header">
+        <img class="logo" src="assets/img/logo.png" alt="Abborren logga">
+        <h1>Abborren Backyard Ultra 2026</h1>
+      </div>
+      <form id="login-form">
+        <label for="username">Användarnamn</label>
+        <input type="text" id="username" autocomplete="username" required>
+
+        <label for="password">Lösenord</label>
+        <input type="password" id="password" autocomplete="current-password" required>
+
+        <div class="error-msg" id="error-msg"></div>
+
+        <button type="submit" class="submit-btn">Logga in</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    if (isLoggedIn()) {
+      window.location.href = "home.html";
+    }
+    document.getElementById("login-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const u = document.getElementById("username").value;
+      const p = document.getElementById("password").value;
+      if (tryLogin(u, p)) {
+        window.location.href = "home.html";
+      } else {
+        document.getElementById("error-msg").textContent = "Fel användarnamn eller lösenord.";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistik om deltagarna – Abborren Backyard Ultra 2026</title>
+<link rel="icon" href="../assets/img/logo.png">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="../home.html">&larr; Tillbaka</a>
+    <div class="site-header">
+      <img class="logo" src="../assets/img/logo.png" alt="Abborren logga">
+      <h1>Statistik om deltagarna</h1>
+    </div>
+
+    <div class="card chart-block">
+      <h3>Jag kommer på... (nedbrutet på kön, %)</h3>
+      <canvas id="chart1" height="200"></canvas>
+    </div>
+
+    <div class="card chart-block">
+      <h3>Jag kommer på... (nedbrutet på ålder, %)</h3>
+      <canvas id="chart2" height="200"></canvas>
+    </div>
+
+    <div class="card chart-block">
+      <h3>Klass (nedbrutet på kön, %)</h3>
+      <canvas id="chart3" height="200"></canvas>
+    </div>
+
+    <div class="card chart-block">
+      <h3>Klass (nedbrutet på ålder, %)</h3>
+      <canvas id="chart4" height="200"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Deltagare</h2>
+      <table class="participant-list">
+        <thead>
+          <tr><th>Nickname</th><th>Ålder</th><th>Ort</th></tr>
+        </thead>
+        <tbody id="participant-rows"></tbody>
+      </table>
+      <p id="empty-msg" style="display:none;">Inga anmälningar än.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">Abborren Backyard Ultra &middot; Est. 2025</footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>requireAuth("../index.html");</script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/statistik.js"></script>
+</body>
+</html>
