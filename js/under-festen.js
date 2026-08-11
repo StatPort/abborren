@@ -109,4 +109,10 @@ acceptBtn.addEventListener("click", async () => {
 AbborrenDB.subscribeTasks((rows) => {
   tasks = rows;
   if (!spinning) renderWheel();
+}, () => {
+  wheelWrapEl.style.display = "none";
+  legendEl.style.display = "none";
+  spinBtn.style.display = "none";
+  emptyMsgEl.style.display = "none";
+  document.getElementById("tasks-error-msg").style.display = "block";
 });

@@ -154,10 +154,13 @@ const AbborrenDB = (function () {
   // ---------- Uppdrag (snurra hjulet) ----------
   // Läser listan av lediga uppdrag live. Uppdrag tas bort permanent (delas mellan
   // alla besökare) när någon klickar "Acceptera uppdrag".
-  function subscribeTasks(callback) {
+  function subscribeTasks(callback, onError) {
     if (useFirebase) {
       return db.collection("tasks").onSnapshot((snap) => {
         callback(snap.docs.map((d) => Object.assign({ id: d.id }, d.data())));
+      }, (err) => {
+        console.error("[AbborrenDB] subscribeTasks error:", err);
+        if (onError) onError(err);
       });
     }
     const seedKey = "tasks_seeded";
