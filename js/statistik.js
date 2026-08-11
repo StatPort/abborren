@@ -52,7 +52,7 @@ function renderStackedBar(canvasId, chartData, existingChart) {
           formatter: (value, ctx) => {
             const count = ctx.dataset.counts[ctx.dataIndex];
             if (!count) return "";
-            return `${count} (${value}%)`;
+            return `${value}%`;
           }
         }
       }
