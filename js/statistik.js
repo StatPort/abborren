@@ -17,13 +17,13 @@ function buildPercentDataset(people, xField, xCategories, seriesFn) {
   const seriesValues = Array.from(new Set(people.map(seriesFn))).sort();
 
   const datasets = seriesValues.map((seriesVal, i) => {
-    const data = xCategories.map((xCat) => {
-      const count = people.filter((p) => p[xField] === xCat && seriesFn(p) === seriesVal).length;
-      return +(100 * count / total).toFixed(1);
-    });
+    const counts = xCategories.map((xCat) =>
+      people.filter((p) => p[xField] === xCat && seriesFn(p) === seriesVal).length);
+    const data = counts.map((c) => +(100 * c / total).toFixed(1));
     return {
       label: seriesVal,
       data,
+      counts,
       backgroundColor: PALETTE[i % PALETTE.length]
     };
   });
@@ -45,9 +45,19 @@ function renderStackedBar(canvasId, chartData, existingChart) {
       },
       plugins: {
         legend: { position: "bottom" },
-        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y}%` } }
+        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.dataset.counts[ctx.dataIndex]} (${ctx.parsed.y}%)` } },
+        datalabels: {
+          color: "#f2efe6",
+          font: { weight: "600", size: 11 },
+          formatter: (value, ctx) => {
+            const count = ctx.dataset.counts[ctx.dataIndex];
+            if (!count) return "";
+            return `${count} (${value}%)`;
+          }
+        }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 }
 
