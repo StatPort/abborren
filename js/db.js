@@ -73,8 +73,9 @@ const AbborrenDB = (function () {
   }
 
   // ---------- Polls ----------
-  async function addPollVote(pollId, choice) {
-    const vote = { pollId, choice, createdAt: new Date().toISOString() };
+  // choices: array av valda alternativ (flerval tillåtet)
+  async function addPollVote(pollId, choices) {
+    const vote = { pollId, choices, createdAt: new Date().toISOString() };
     if (useFirebase) {
       await db.collection("pollVotes").add(vote);
       return;

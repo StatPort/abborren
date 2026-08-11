@@ -31,14 +31,15 @@ const POLLS = [
 
 function pollCardHtml(poll) {
   const optionsHtml = poll.options.map((opt, i) => `
-    <label class="radio-row">
-      <input type="radio" name="${poll.id}" value="${escapeAttr(opt)}">
+    <label class="checkbox-row">
+      <input type="checkbox" name="${poll.id}" value="${escapeAttr(opt)}">
       ${escapeHtml(opt)}
     </label>`).join("");
 
   return `
   <div class="card">
     <h2>${escapeHtml(poll.question)}</h2>
+    <p style="opacity:0.7; margin-top:-6px;">Flera svar möjliga</p>
     <div class="poll-form" id="form-${poll.id}">
       ${optionsHtml}
       <button type="button" class="submit-btn poll-vote-btn" data-poll="${poll.id}">Rösta</button>
@@ -76,7 +77,7 @@ function wrapLabel(text, maxLen) {
 
 function renderPollChart(poll, votes) {
   const total = votes.length || 1;
-  const counts = poll.options.map((opt) => votes.filter((v) => v.choice === opt).length);
+  const counts = poll.options.map((opt) => votes.filter((v) => (v.choices || []).includes(opt)).length);
   const percentages = counts.map((c) => +(100 * c / total).toFixed(1));
 
   if (pollCharts[poll.id]) pollCharts[poll.id].destroy();
@@ -114,12 +115,12 @@ function setupPoll(poll) {
   AbborrenDB.subscribePollVotes(poll.id, (votes) => renderPollChart(poll, votes));
 
   formEl.querySelector(".poll-vote-btn").addEventListener("click", async () => {
-    const checked = formEl.querySelector(`input[name="${poll.id}"]:checked`);
-    if (!checked) {
-      alert("Välj ett alternativ innan du röstar.");
+    const checked = Array.from(formEl.querySelectorAll(`input[name="${poll.id}"]:checked`));
+    if (checked.length === 0) {
+      alert("Välj minst ett alternativ innan du röstar.");
       return;
     }
-    await AbborrenDB.addPollVote(poll.id, checked.value);
+    await AbborrenDB.addPollVote(poll.id, checked.map((c) => c.value));
     AbborrenDB.markVoted(poll.id);
     formEl.style.display = "none";
   });
