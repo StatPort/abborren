@@ -19,7 +19,7 @@ const POLLS = [
     id: "poll2",
     question: "På fest gillar jag att...",
     options: [
-      "Dansa",
+      "Dansa när jag får feeling",
       "Springa runt och snacka med alla jag känner och inte känner",
       "Samtala med några få människor",
       "Träffa nytt folk",
