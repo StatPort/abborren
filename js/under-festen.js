@@ -53,7 +53,7 @@ function renderWheel() {
     wheelEl.appendChild(numEl);
 
     const li = document.createElement("li");
-    li.textContent = `${i + 1}. ${t.label}`;
+    li.textContent = t.label;
     legendEl.appendChild(li);
   });
 }
