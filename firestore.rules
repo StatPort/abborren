@@ -7,6 +7,9 @@ service cloud.firestore {
     match /pollVotes/{doc} {
       allow read, write: if true;
     }
+    match /tasks/{doc} {
+      allow read, write: if true;
+    }
     match /{document=**} {
       allow read, write: if false;
     }

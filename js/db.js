@@ -3,6 +3,21 @@
  * nycklar, annars faller den tillbaka på localStorage så sidan går att testa
  * innan Firebase är kopplat. Samma AbborrenDB-API oavsett bakände.
  */
+const DEFAULT_TASKS = [
+  "Hjälp Matilda att blanda en batch drink",
+  "Hjälp Matilda att blanda en batch drink",
+  "Hjälp Matilda att blanda en batch drink",
+  "Hjälp Matilda att blanda en batch drink",
+  "Hjälp Matilda att blanda en batch drink",
+  "Läs upp frågorna i quizet",
+  "Samla ihop folk till quiz",
+  "Plocka disk",
+  "Servera kaffe",
+  "Fyll på med öl och bubbel till kyl",
+  "Fyll på med bubbel och öl till baren från kyl",
+  "Korvassistent"
+];
+
 const AbborrenDB = (function () {
   const useFirebase = typeof FIREBASE_CONFIG !== "undefined" &&
     FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== "REPLACE_ME" &&
@@ -136,6 +151,37 @@ const AbborrenDB = (function () {
     return "id-" + Math.random().toString(36).slice(2) + Date.now().toString(36);
   }
 
+  // ---------- Uppdrag (snurra hjulet) ----------
+  // Läser listan av lediga uppdrag live. Uppdrag tas bort permanent (delas mellan
+  // alla besökare) när någon klickar "Acceptera uppdrag".
+  function subscribeTasks(callback) {
+    if (useFirebase) {
+      return db.collection("tasks").onSnapshot((snap) => {
+        callback(snap.docs.map((d) => Object.assign({ id: d.id }, d.data())));
+      });
+    }
+    const seedKey = "tasks_seeded";
+    if (!localStorage.getItem(seedKey)) {
+      const seeded = DEFAULT_TASKS.map((label) => ({ id: cryptoRandomId(), label }));
+      lsSet("tasks", seeded);
+      localStorage.setItem(seedKey, "yes");
+    }
+    const handler = () => callback(lsGet("tasks", []));
+    handler();
+    window.addEventListener("abborren-ls-tasks", handler);
+    return () => window.removeEventListener("abborren-ls-tasks", handler);
+  }
+
+  async function acceptTask(taskId) {
+    if (useFirebase) {
+      await db.collection("tasks").doc(taskId).delete();
+      return;
+    }
+    const current = lsGet("tasks", []);
+    lsSet("tasks", current.filter((t) => t.id !== taskId));
+    notify("tasks");
+  }
+
   return {
     useFirebase,
     addSignups,
@@ -144,6 +190,8 @@ const AbborrenDB = (function () {
     subscribePollVotes,
     hasVoted,
     markVoted,
-    getVoteId
+    getVoteId,
+    subscribeTasks,
+    acceptTask
   };
 })();

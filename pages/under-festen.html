@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Under festen – Abborren Backyard Ultra 2026</title>
+<link rel="icon" href="../assets/img/logo.png">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="../home.html">&larr; Tillbaka</a>
+    <div class="site-header">
+      <img class="logo" src="../assets/img/logo.png" alt="Abborren logga">
+      <h1>Under festen</h1>
+    </div>
+
+    <div class="card">
+      <h2>Jag vill hjälpa till och fixa, ge mig ett uppdrag</h2>
+
+      <div class="wheel-wrap" id="wheel-wrap">
+        <div class="wheel-pointer"></div>
+        <div class="wheel" id="wheel"></div>
+      </div>
+
+      <ol class="wheel-legend" id="wheel-legend"></ol>
+
+      <button type="button" class="submit-btn" id="spin-btn">Snurra hjulet och få ett uppdrag</button>
+
+      <div class="task-result" id="task-result" style="display:none;">
+        <p>Ditt uppdrag: <strong id="task-result-text"></strong></p>
+        <button type="button" class="submit-btn" id="accept-btn">Acceptera uppdrag</button>
+        <button type="button" class="secondary-btn" id="decline-btn">Neka</button>
+      </div>
+
+      <p id="task-accepted-msg" style="display:none;">Uppdrag accepterat, tack för hjälpen! 🎉</p>
+      <p id="tasks-empty-msg" style="display:none;">Alla uppdrag är tagna! Tack för hjälpen 🎉</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">Abborren Backyard Ultra &middot; Est. 2025</footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>requireAuth("../index.html");</script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/under-festen.js"></script>
+</body>
+</html>
