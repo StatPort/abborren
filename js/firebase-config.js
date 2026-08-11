@@ -3,10 +3,10 @@
 // Så länge det här är platshållarvärden körs appen i lokalt lagringsläge
 // (localStorage) istället för Firebase, så allt går att testa direkt.
 const FIREBASE_CONFIG = {
-  apiKey: "REPLACE_ME",
-  authDomain: "REPLACE_ME.firebaseapp.com",
-  projectId: "REPLACE_ME",
-  storageBucket: "REPLACE_ME.appspot.com",
-  messagingSenderId: "REPLACE_ME",
-  appId: "REPLACE_ME"
+  apiKey: "AIzaSyCnT9ung6te_pdrvSxmei8IAdU_nPTOdc0",
+  authDomain: "abborren-6ac77.firebaseapp.com",
+  projectId: "abborren-6ac77",
+  storageBucket: "abborren-6ac77.firebasestorage.app",
+  messagingSenderId: "283224627428",
+  appId: "1:283224627428:web:9f688b61fea9489326f4f1"
 };
