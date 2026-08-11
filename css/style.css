@@ -539,7 +539,9 @@ footer.site-footer {
 .wheel-legend {
   max-width: 420px;
   margin: 0 auto 20px;
-  padding-left: 1.4em;
+  padding-left: 0;
+  list-style: none;
+  text-align: left;
 }
 
 .wheel-legend li {

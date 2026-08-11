@@ -16,7 +16,8 @@ const DEFAULT_TASKS = [
   "Fyll på med öl och bubbel till kyl",
   "Fyll på med bubbel och öl till baren från kyl",
   "Korvassistent",
-  "Vara funktionär under loppet"
+  "Vara funktionär under loppet",
+  "Fyll på kyl med öl och bubbel"
 ];
 
 const AbborrenDB = (function () {
