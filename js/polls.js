@@ -3,7 +3,7 @@ const POLL_PALETTE = ["#5a4658", "#8a6a86", "#b79a8f", "#7c2f2f", "#b4bdaf", "#4
 const POLLS = [
   {
     id: "poll1",
-    question: "Vad fick dig att komma på festen?",
+    question: "Vad får dig att vilja komma på festen?",
     options: [
       "Jag älskar fest",
       "Jag hatar fest men blev tvingad",

@@ -325,6 +325,29 @@ legend {
   margin-top: 14px;
 }
 
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 26px 0 10px;
+  color: var(--plum-dark);
+  font-weight: 700;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: var(--plum);
+  opacity: 0.6;
+}
+
+.divider span {
+  white-space: nowrap;
+  text-align: center;
+}
+
 @media (max-width: 640px) {
   .menu-grid { grid-template-columns: 1fr; }
   .menu-grid .full { grid-column: auto; }
