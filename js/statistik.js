@@ -90,15 +90,9 @@ function renderAll(people) {
       <td>${escapeHtml(p.nickname)}</td>
       <td>${escapeHtml(p.age)}</td>
       <td>${escapeHtml(p.hometown)}</td>
-      <td>${escapeHtml(p.parking)}</td>
-      <td>${escapeHtml(p.diet)}</td>
     </tr>
   `).join("");
   document.getElementById("empty-msg").style.display = people.length ? "none" : "block";
-
-  const parkingCount = people.filter((p) => p.parking === "Ja").length;
-  document.getElementById("parking-summary").textContent =
-    people.length ? `${parkingCount} av ${people.length} behöver parkering` : "";
 }
 
 function escapeHtml(str) {

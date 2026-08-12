@@ -154,6 +154,10 @@ function setupSignupsEditor() {
     container.innerHTML = signups.length
       ? signups.map((s) => signupRowHtml(s, genderOpts, ageOpts, classOpts)).join("")
       : "<p>Inga anmälningar än.</p>";
+
+    const parkingCount = signups.filter((s) => s.parking === "Ja").length;
+    document.getElementById("admin-parking-summary").textContent =
+      signups.length ? `${parkingCount} av ${signups.length} behöver parkering` : "";
   }
 
   container.addEventListener("click", async (e) => {
