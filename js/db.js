@@ -182,13 +182,19 @@ const AbborrenDB = (function () {
     return () => window.removeEventListener("abborren-ls-tasks", handler);
   }
 
-  async function acceptTask(taskId) {
+  // Markerar ett uppdrag som paxat (istället för att ta bort det) så det
+  // fortsätter synas i "Paxade uppdrag"-listan med namnet på personen.
+  async function acceptTask(taskId, name) {
     if (useFirebase) {
-      await db.collection("tasks").doc(taskId).delete();
+      await db.collection("tasks").doc(taskId).update({ claimedBy: name, claimedAt: new Date().toISOString() });
       return;
     }
     const current = lsGet("tasks", []);
-    lsSet("tasks", current.filter((t) => t.id !== taskId));
+    const idx = current.findIndex((t) => t.id === taskId);
+    if (idx !== -1) {
+      current[idx] = Object.assign({}, current[idx], { claimedBy: name, claimedAt: new Date().toISOString() });
+    }
+    lsSet("tasks", current);
     notify("tasks");
   }
 

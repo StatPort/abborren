@@ -11,7 +11,7 @@ const POLLS = [
       "Jag älskar korv med bröd",
       "Jag är här för att Matilda & Michael är världens härligaste människor och jag vill hänga med dem",
       "Jag vill springa världens roligaste lopp",
-      "Jag vet inte, jag tycker det är lite läskigt",
+      "Jag vet inte",
       "Jag vill snacka politik"
     ]
   },
@@ -108,7 +108,8 @@ function renderPollChart(poll, votes) {
         tooltip: { callbacks: { label: (ctx) => ctx.parsed.x + "%" } }
       },
       scales: {
-        x: { beginAtZero: true, max: 100, ticks: { callback: (v) => v + "%" } }
+        x: { beginAtZero: true, max: 100, ticks: { callback: (v) => v + "%" } },
+        y: { ticks: { autoSkip: false } }
       }
     }
   });

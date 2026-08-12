@@ -538,7 +538,7 @@ footer.site-footer {
 
 .wheel-legend {
   max-width: 420px;
-  margin: 0 auto 20px;
+  margin: 20px auto 0;
   padding-left: 0;
   list-style: none;
   text-align: left;
@@ -553,6 +553,37 @@ footer.site-footer {
   text-align: center;
 }
 
+.task-result label {
+  text-align: left;
+  max-width: 300px;
+  margin: 14px auto 0;
+}
+
+.task-result input[type="text"] {
+  max-width: 300px;
+  margin: 0 auto;
+  display: block;
+}
+
+.task-result .submit-btn {
+  max-width: 300px;
+  margin: 14px auto 0;
+}
+
 .task-result .secondary-btn {
   margin-left: 10px;
+}
+
+.claimed-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.claimed-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.claimed-list li:last-child {
+  border-bottom: none;
 }

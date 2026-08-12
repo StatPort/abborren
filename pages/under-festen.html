@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="page">
-    <a class="back-link" href="../home.html">&larr; Tillbaka</a>
+    <a class="back-link" href="../index.html">&larr; Tillbaka</a>
     <div class="site-header">
       <img class="logo" src="../assets/img/logo.png" alt="Abborren logga">
       <h1>Under festen</h1>
@@ -23,12 +23,12 @@
         <div class="wheel" id="wheel"></div>
       </div>
 
-      <ul class="wheel-legend" id="wheel-legend"></ul>
-
       <button type="button" class="submit-btn" id="spin-btn">Snurra hjulet och få ett uppdrag</button>
 
       <div class="task-result" id="task-result" style="display:none;">
         <p>Ditt uppdrag: <strong id="task-result-text"></strong></p>
+        <label for="claim-name">Ditt namn</label>
+        <input type="text" id="claim-name" placeholder="Skriv ditt namn">
         <button type="button" class="submit-btn" id="accept-btn">Acceptera uppdrag</button>
         <button type="button" class="secondary-btn" id="decline-btn">Neka</button>
       </div>
@@ -36,6 +36,13 @@
       <p id="task-accepted-msg" style="display:none;">Uppdrag accepterat, tack för hjälpen! 🎉</p>
       <p id="tasks-empty-msg" style="display:none;">Alla uppdrag är tagna! Tack för hjälpen 🎉</p>
       <p id="tasks-error-msg" style="display:none;">Kunde inte hämta uppdragslistan just nu. Prova igen om en liten stund.</p>
+
+      <ul class="wheel-legend" id="wheel-legend"></ul>
+    </div>
+
+    <div class="card" id="claimed-card" style="display:none;">
+      <h2>Paxade uppdrag</h2>
+      <ul class="claimed-list" id="claimed-list"></ul>
     </div>
   </div>
 
@@ -43,8 +50,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="../js/auth.js"></script>
-  <script>requireAuth("../index.html");</script>
   <script src="../js/firebase-config.js"></script>
   <script src="../js/db.js"></script>
   <script src="../js/under-festen.js"></script>
