@@ -90,6 +90,7 @@ function renderAll(people) {
       <td>${escapeHtml(p.nickname)}</td>
       <td>${escapeHtml(p.age)}</td>
       <td>${escapeHtml(p.hometown)}</td>
+      <td>${escapeHtml(p.attending)}</td>
     </tr>
   `).join("");
   document.getElementById("empty-msg").style.display = people.length ? "none" : "block";
