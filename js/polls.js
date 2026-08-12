@@ -1,37 +1,5 @@
 const POLL_PALETTE = ["#5a4658", "#8a6a86", "#b79a8f", "#7c2f2f", "#b4bdaf", "#453449", "#c9a35a"];
 
-const POLLS = [
-  {
-    id: "poll1",
-    question: "Vad får dig att vilja komma på festen?",
-    options: [
-      "Jag älskar fest",
-      "Jag hatar fest men blev tvingad",
-      "Jag tyckte att det lät kul bara",
-      "Jag älskar korv med bröd",
-      "Jag är här för att Matilda & Michael är världens härligaste människor och jag vill hänga med dem",
-      "Jag vill springa världens roligaste lopp",
-      "Jag vet inte",
-      "Jag vill snacka politik"
-    ]
-  },
-  {
-    id: "poll2",
-    question: "På fest gillar jag att...",
-    options: [
-      "Dansa när jag får feeling",
-      "Springa runt och snacka med alla jag känner och inte känner",
-      "Samtala med några få människor",
-      "Träffa nytt folk",
-      "Hänga med vänner",
-      "Springa lopp",
-      "Sitta i ett hörn och tjura",
-      "Bada pool",
-      "Jag gillar inte fest"
-    ]
-  }
-];
-
 function pollCardHtml(poll) {
   const optionsHtml = poll.options.map((opt, i) => `
     <label class="checkbox-row">
@@ -152,8 +120,9 @@ function setupPoll(poll) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const polls = await AbborrenDB.getConfig("polls", DEFAULT_POLLS);
   const container = document.getElementById("polls-container");
-  container.innerHTML = POLLS.map(pollCardHtml).join("");
-  POLLS.forEach(setupPoll);
+  container.innerHTML = polls.map(pollCardHtml).join("");
+  polls.forEach(setupPoll);
 });

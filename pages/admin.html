@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin – Abborren Backyard Ultra 2026</title>
+<link rel="icon" href="../assets/img/logo.png">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="../index.html">&larr; Tillbaka</a>
+
+    <div id="admin-login-wrap" class="login-wrap" style="flex:none; padding: 40px 0;">
+      <div class="card login-card">
+        <h2>Admin</h2>
+        <form id="admin-login-form">
+          <label for="admin-username">Användarnamn</label>
+          <input type="text" id="admin-username" autocomplete="off" required>
+
+          <label for="admin-password">Lösenord</label>
+          <input type="password" id="admin-password" autocomplete="off" required>
+
+          <div class="error-msg" id="admin-error-msg"></div>
+
+          <button type="submit" class="submit-btn">Logga in</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="admin-panel" style="display:none;">
+      <div class="site-header">
+        <img class="logo" src="../assets/img/logo.png" alt="Abborren logga">
+        <h1>Admin</h1>
+      </div>
+
+      <div class="card">
+        <h2>Deltagare</h2>
+        <div id="admin-signups"></div>
+      </div>
+
+      <div class="card">
+        <h2>Svarsalternativ – Anmäl dig här</h2>
+        <div class="admin-subsection">
+          <h3>Kön</h3>
+          <ul class="admin-list" id="list-genderOptions"></ul>
+          <div class="admin-add-row">
+            <input type="text" id="add-genderOptions" placeholder="Nytt alternativ">
+            <button type="button" class="secondary-btn admin-add-btn" data-key="genderOptions">Lägg till</button>
+          </div>
+        </div>
+        <div class="admin-subsection">
+          <h3>Mental ålder</h3>
+          <ul class="admin-list" id="list-mentalAgeOptions"></ul>
+          <div class="admin-add-row">
+            <input type="text" id="add-mentalAgeOptions" placeholder="Nytt alternativ">
+            <button type="button" class="secondary-btn admin-add-btn" data-key="mentalAgeOptions">Lägg till</button>
+          </div>
+        </div>
+        <div class="admin-subsection">
+          <h3>Klass</h3>
+          <ul class="admin-list" id="list-classOptions"></ul>
+          <div class="admin-add-row">
+            <input type="text" id="add-classOptions" placeholder="Nytt alternativ">
+            <button type="button" class="secondary-btn admin-add-btn" data-key="classOptions">Lägg till</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Polls</h2>
+        <div id="admin-polls"></div>
+        <button type="button" class="secondary-btn" id="add-poll-btn">+ Lägg till ny poll</button>
+      </div>
+
+      <div class="card">
+        <h2>Snurra hjulet – uppdrag</h2>
+        <ul class="admin-list" id="admin-tasks"></ul>
+        <div class="admin-add-row">
+          <input type="text" id="add-task" placeholder="Nytt uppdrag">
+          <button type="button" class="secondary-btn" id="add-task-btn">Lägg till</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Q&amp;A</h2>
+        <div id="admin-qa"></div>
+        <button type="button" class="secondary-btn" id="add-qa-btn">+ Lägg till fråga</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">Abborren Backyard Ultra &middot; Est. 2025</footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/config-defaults.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

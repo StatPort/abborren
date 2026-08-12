@@ -2,29 +2,8 @@
  * Databaslager. Använder Firestore om FIREBASE_CONFIG är ifylld med riktiga
  * nycklar, annars faller den tillbaka på localStorage så sidan går att testa
  * innan Firebase är kopplat. Samma AbborrenDB-API oavsett bakände.
+ * DEFAULT_TASKS kommer från config-defaults.js (måste laddas innan denna fil).
  */
-const DEFAULT_TASKS = [
-  "Hjälp Matilda att blanda en batch drinkar",
-  "Hjälp Matilda att blanda en batch drinkar",
-  "Hjälp Matilda att blanda en batch drinkar",
-  "Hjälp Matilda att blanda en batch drinkar",
-  "Hjälp Matilda att blanda en batch drinkar",
-  "Läs upp frågorna i quizet",
-  "Samla ihop folk till quiz",
-  "Plocka disk",
-  "Servera kaffe",
-  "Fyll på med öl och bubbel till kyl",
-  "Fyll på med bubbel och öl till baren från kyl",
-  "Korvassistent",
-  "Vara funktionär under loppet",
-  "Vara funktionär under loppet",
-  "Vara funktionär under loppet",
-  "Vara funktionär under loppet",
-  "Fyll på kyl med öl och bubbel",
-  "Regnansvarig, om det kommer en skur hjälp till att plocka in dynorna",
-  "Isansvarig (oklart vad det innebär, men det kommer behövas)"
-];
-
 const AbborrenDB = (function () {
   const useFirebase = typeof FIREBASE_CONFIG !== "undefined" &&
     FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== "REPLACE_ME" &&
@@ -198,16 +177,136 @@ const AbborrenDB = (function () {
     notify("tasks");
   }
 
+  async function addTask(label) {
+    if (useFirebase) {
+      await db.collection("tasks").add({ label });
+      return;
+    }
+    const current = lsGet("tasks", []);
+    current.push({ id: cryptoRandomId(), label });
+    lsSet("tasks", current);
+    notify("tasks");
+  }
+
+  async function updateTask(taskId, fields) {
+    if (useFirebase) {
+      await db.collection("tasks").doc(taskId).update(fields);
+      return;
+    }
+    const current = lsGet("tasks", []);
+    const idx = current.findIndex((t) => t.id === taskId);
+    if (idx !== -1) current[idx] = Object.assign({}, current[idx], fields);
+    lsSet("tasks", current);
+    notify("tasks");
+  }
+
+  async function deleteTask(taskId) {
+    if (useFirebase) {
+      await db.collection("tasks").doc(taskId).delete();
+      return;
+    }
+    const current = lsGet("tasks", []);
+    lsSet("tasks", current.filter((t) => t.id !== taskId));
+    notify("tasks");
+  }
+
+  async function updateSignup(id, fields) {
+    if (useFirebase) {
+      await db.collection("signups").doc(id).update(fields);
+      return;
+    }
+    const current = lsGet("signups", []);
+    const idx = current.findIndex((s) => s.id === id);
+    if (idx !== -1) current[idx] = Object.assign({}, current[idx], fields);
+    lsSet("signups", current);
+    notify("signups");
+  }
+
+  async function deleteSignup(id) {
+    if (useFirebase) {
+      await db.collection("signups").doc(id).delete();
+      return;
+    }
+    const current = lsGet("signups", []);
+    lsSet("signups", current.filter((s) => s.id !== id));
+    notify("signups");
+  }
+
+  // ---------- Config (admin-redigerbart innehåll) ----------
+  // Generisk nyckel/värde-lagring för sådant en admin ska kunna redigera:
+  // svarsalternativ, polls, Q&A, osv. Seedas automatiskt med defaultValue
+  // första gången ingen har skrivit något ännu.
+  async function setConfig(key, value) {
+    if (useFirebase) {
+      await db.collection("config").doc(key).set({ value });
+      return;
+    }
+    lsSet("config_" + key, value);
+    notify("config_" + key);
+  }
+
+  function subscribeConfig(key, defaultValue, callback, onError) {
+    if (useFirebase) {
+      let seeding = false;
+      return db.collection("config").doc(key).onSnapshot((doc) => {
+        if (doc.exists) {
+          callback(doc.data().value);
+        } else if (!seeding) {
+          seeding = true;
+          db.collection("config").doc(key).set({ value: defaultValue })
+            .then(() => { seeding = false; });
+        }
+      }, (err) => {
+        console.error("[AbborrenDB] subscribeConfig error for " + key + ":", err);
+        if (onError) onError(err);
+      });
+    }
+    const lsKey = "config_" + key;
+    if (lsGet(lsKey, null) === null) {
+      lsSet(lsKey, defaultValue);
+    }
+    const handler = () => callback(lsGet(lsKey, defaultValue));
+    handler();
+    window.addEventListener("abborren-ls-" + lsKey, handler);
+    return () => window.removeEventListener("abborren-ls-" + lsKey, handler);
+  }
+
+  // Engångsläsning av en config-nyckel (t.ex. för att fylla ett formulär vid
+  // sidladdning utan att formuläret hoppar runt om admin ändrar något senare).
+  // Faller tillbaka på defaultValue om Firestore inte går att nå (t.ex. innan
+  // säkerhetsreglerna är publicerade) så sidan aldrig hänger sig.
+  function getConfig(key, defaultValue) {
+    return new Promise((resolve) => {
+      let unsub = null;
+      let settled = false;
+      const finish = (value) => {
+        if (settled) return;
+        settled = true;
+        resolve(value);
+        setTimeout(() => { if (unsub) unsub(); }, 0);
+      };
+      unsub = subscribeConfig(key, defaultValue, finish, () => finish(defaultValue));
+    });
+  }
+
   return {
     useFirebase,
     addSignups,
     subscribeSignups,
+    updateSignup,
+    deleteSignup,
     addPollVote,
     subscribePollVotes,
     hasVoted,
     markVoted,
     getVoteId,
     subscribeTasks,
-    acceptTask
+    acceptTask,
+    addTask,
+    updateTask,
+    deleteTask,
+    setConfig,
+    subscribeConfig,
+    getConfig
   };
 })();

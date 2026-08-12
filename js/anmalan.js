@@ -1,29 +1,13 @@
-const GENDER_OPTIONS = [
-  "Kvinna",
-  "Man",
-  "Icke-binär",
-  "Transkvinna",
-  "Transman",
-  "Genderqueer",
-  "Annan könsidentitet",
-  "Vill inte uppge"
-];
-
-const MENTAL_AGE_OPTIONS = [
-  "Jag lever som om det inte fanns någon morgondag",
-  "Föddes som pensionär",
-  "Har ett spann på 19-84",
-  "Omyndig",
-  "Lederna börjar kärva men det går an",
-  "Jag gillar lugn och ro",
-  "Tidlös & evig"
-];
+let GENDER_OPTIONS = DEFAULT_GENDER_OPTIONS;
+let MENTAL_AGE_OPTIONS = DEFAULT_MENTAL_AGE_OPTIONS;
+let CLASS_OPTIONS = DEFAULT_CLASS_OPTIONS;
 
 let personCount = 0;
 
 function personBlockHtml(index) {
   const genderOpts = GENDER_OPTIONS.map((g) => `<option value="${g}">${g}</option>`).join("");
   const ageOpts = MENTAL_AGE_OPTIONS.map((a) => `<option value="${a}">${a}</option>`).join("");
+  const classOpts = CLASS_OPTIONS.map((c) => `<option value="${c}">${c}</option>`).join("");
   return `
   <fieldset class="person-block" data-index="${index}">
     <legend>Deltagare ${index + 1}</legend>
@@ -60,9 +44,7 @@ function personBlockHtml(index) {
     </label>
     <select id="class-${index}" class="f-class" required>
       <option value="" disabled selected>Välj...</option>
-      <option value="Fun Run">Fun Run</option>
-      <option value="Backyard">Backyard</option>
-      <option value="Stafett">Stafett</option>
+      ${classOpts}
     </select>
 
     <label>Jag behöver parkering</label>
@@ -102,7 +84,16 @@ function readPersonBlocks() {
   return people;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const [genderOpts, ageOpts, classOpts] = await Promise.all([
+    AbborrenDB.getConfig("genderOptions", DEFAULT_GENDER_OPTIONS),
+    AbborrenDB.getConfig("mentalAgeOptions", DEFAULT_MENTAL_AGE_OPTIONS),
+    AbborrenDB.getConfig("classOptions", DEFAULT_CLASS_OPTIONS)
+  ]);
+  GENDER_OPTIONS = genderOpts;
+  MENTAL_AGE_OPTIONS = ageOpts;
+  CLASS_OPTIONS = classOpts;
+
   addPersonBlock();
 
   document.getElementById("add-person-btn").addEventListener("click", addPersonBlock);
