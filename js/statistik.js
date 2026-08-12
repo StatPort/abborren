@@ -1,5 +1,19 @@
 const PALETTE = ["#5a4658", "#8a6a86", "#b79a8f", "#7c2f2f", "#b4bdaf", "#453449", "#c9a35a", "#4a6b5a"];
 
+const MENTAL_AGE_SHORT = {
+  "Jag lever som om det inte fanns någon morgondag": "YOLO",
+  "Föddes som pensionär": "Pensionär",
+  "Har ett spann på 19-84": "19-84",
+  "Omyndig": "Omyndig",
+  "Lederna börjar kärva men det går an.": "Kärva leder",
+  "Jag gillar lugn och ro.": "Lugn & ro"
+};
+
+function shortAge(age) {
+  if (!age) return "Okänd";
+  return MENTAL_AGE_SHORT[age] || age;
+}
+
 // Bygger en procentandel-per-kategori-datastruktur för ett grupperat stapeldiagram.
 // xCategories = kolumnerna (t.ex. Loppet/Festen/Båda), seriesFn extraherar seriens värde per person.
 function buildPercentDataset(people, xField, xCategories, seriesFn) {
@@ -61,13 +75,13 @@ function renderAll(people) {
     buildPercentDataset(people, "attending", attendingCats, (p) => p.gender || "Okänd"), charts.c1);
 
   charts.c2 = renderStackedBar("chart2",
-    buildPercentDataset(people, "attending", attendingCats, (p) => p.age || "Okänd"), charts.c2);
+    buildPercentDataset(people, "attending", attendingCats, (p) => shortAge(p.age)), charts.c2);
 
   charts.c3 = renderStackedBar("chart3",
     buildPercentDataset(people, "participantClass", classCats, (p) => p.gender || "Okänd"), charts.c3);
 
   charts.c4 = renderStackedBar("chart4",
-    buildPercentDataset(people, "participantClass", classCats, (p) => p.age || "Okänd"), charts.c4);
+    buildPercentDataset(people, "participantClass", classCats, (p) => shortAge(p.age)), charts.c4);
 
   const rows = document.getElementById("participant-rows");
   rows.innerHTML = people.map((p) => `
