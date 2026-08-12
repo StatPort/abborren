@@ -1,15 +1,5 @@
 const PALETTE = ["#5a4658", "#8a6a86", "#b79a8f", "#7c2f2f", "#b4bdaf", "#453449", "#c9a35a", "#4a6b5a"];
 
-function bucketAge(ageStr) {
-  const n = parseInt(String(ageStr).replace(/\D/g, ""), 10);
-  if (isNaN(n)) return "Okänd";
-  if (n < 18) return "Under 18";
-  if (n < 30) return "18–29";
-  if (n < 45) return "30–44";
-  if (n < 60) return "45–59";
-  return "60+";
-}
-
 // Bygger en procentandel-per-kategori-datastruktur för ett grupperat stapeldiagram.
 // xCategories = kolumnerna (t.ex. Loppet/Festen/Båda), seriesFn extraherar seriens värde per person.
 function buildPercentDataset(people, xField, xCategories, seriesFn) {
@@ -71,13 +61,13 @@ function renderAll(people) {
     buildPercentDataset(people, "attending", attendingCats, (p) => p.gender || "Okänd"), charts.c1);
 
   charts.c2 = renderStackedBar("chart2",
-    buildPercentDataset(people, "attending", attendingCats, (p) => bucketAge(p.age)), charts.c2);
+    buildPercentDataset(people, "attending", attendingCats, (p) => p.age || "Okänd"), charts.c2);
 
   charts.c3 = renderStackedBar("chart3",
     buildPercentDataset(people, "participantClass", classCats, (p) => p.gender || "Okänd"), charts.c3);
 
   charts.c4 = renderStackedBar("chart4",
-    buildPercentDataset(people, "participantClass", classCats, (p) => bucketAge(p.age)), charts.c4);
+    buildPercentDataset(people, "participantClass", classCats, (p) => p.age || "Okänd"), charts.c4);
 
   const rows = document.getElementById("participant-rows");
   rows.innerHTML = people.map((p) => `

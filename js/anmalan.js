@@ -9,10 +9,18 @@ const GENDER_OPTIONS = [
   "Vill inte uppge"
 ];
 
+const MENTAL_AGE_OPTIONS = [
+  "Jag lever som om det inte fanns någon morgondag",
+  "Föddes som pensionär",
+  "Har ett spann på 19-84",
+  "Omyndig"
+];
+
 let personCount = 0;
 
 function personBlockHtml(index) {
   const genderOpts = GENDER_OPTIONS.map((g) => `<option value="${g}">${g}</option>`).join("");
+  const ageOpts = MENTAL_AGE_OPTIONS.map((a) => `<option value="${a}">${a}</option>`).join("");
   return `
   <fieldset class="person-block" data-index="${index}">
     <legend>Deltagare ${index + 1}</legend>
@@ -20,8 +28,11 @@ function personBlockHtml(index) {
     <label for="nickname-${index}">Nickname</label>
     <input type="text" id="nickname-${index}" class="f-nickname" required>
 
-    <label for="age-${index}">Ålder</label>
-    <input type="text" id="age-${index}" class="f-age" required>
+    <label for="age-${index}">Mental ålder</label>
+    <select id="age-${index}" class="f-age" required>
+      <option value="" disabled selected>Välj...</option>
+      ${ageOpts}
+    </select>
 
     <label for="gender-${index}">Kön</label>
     <select id="gender-${index}" class="f-gender" required>
