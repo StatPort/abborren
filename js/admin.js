@@ -97,22 +97,28 @@ function setupStringListEditor(configKey, defaultValue) {
 
 /* ---------- Deltagare ---------- */
 
-function signupRowHtml(s, genderOpts, ageOpts, classOpts) {
-  const attendingOpts = [
-    ["Loppet", "Jag kommer på loppet"],
-    ["Festen", "Jag kommer på festen"],
-    ["Båda", "Jag kommer på båda"],
-    ["Kommer inte", "Jag kommer inte alls tyvärr, hemsk ledsen"]
-  ];
-  const opt = (list, current) => list.map((v) => {
+const ATTENDING_OPTS = [
+  ["Loppet", "Jag kommer på loppet"],
+  ["Festen", "Jag kommer på festen"],
+  ["Båda", "Jag kommer på båda"],
+  ["Kommer inte", "Jag kommer inte alls tyvärr, hemsk ledsen"]
+];
+
+function signupOpt(list, current) {
+  return list.map((v) => {
     const val = Array.isArray(v) ? v[0] : v;
     const label = Array.isArray(v) ? v[1] : v;
     return `<option value="${escapeAttr(val)}" ${val === current ? "selected" : ""}>${escapeHtml(label)}</option>`;
   }).join("");
+}
+
+function signupRowHtml(s, genderOpts, ageOpts, classOpts) {
+  const opt = signupOpt;
+  const attendingOpts = ATTENDING_OPTS;
 
   return `
   <div class="admin-signup-row" data-id="${s.id}">
-    <label>Nickname</label>
+    <label>Namn eller nickname</label>
     <input type="text" class="f-nickname" value="${escapeAttr(s.nickname)}">
 
     <label>Mental ålder</label>
@@ -143,12 +149,45 @@ function signupRowHtml(s, genderOpts, ageOpts, classOpts) {
   </div>`;
 }
 
+function newSignupFormHtml(genderOpts, ageOpts, classOpts) {
+  const skip = [["", "Hoppa över"]];
+  return `
+  <div id="new-signup-fields">
+    <label>Namn eller nickname</label>
+    <input type="text" class="f-nickname">
+
+    <label>Mental ålder</label>
+    <select class="f-age">${signupOpt(skip.concat(ageOpts), "")}</select>
+
+    <label>Kön</label>
+    <select class="f-gender">${signupOpt(skip.concat(genderOpts), "")}</select>
+
+    <label>Ort</label>
+    <input type="text" class="f-hometown">
+
+    <label>Jag kommer på</label>
+    <select class="f-attending">${signupOpt(skip.concat(ATTENDING_OPTS), "")}</select>
+
+    <label>Klass</label>
+    <select class="f-class">${signupOpt(skip.concat(classOpts), "")}</select>
+
+    <label>Parkering</label>
+    <select class="f-parking">${signupOpt(skip.concat([["Ja", "Ja"], ["Nej", "Nej"]]), "")}</select>
+
+    <label>Kost/allergier</label>
+    <input type="text" class="f-diet">
+  </div>`;
+}
+
 function setupSignupsEditor() {
   const container = document.getElementById("admin-signups");
+  const newSignupContainer = document.getElementById("admin-new-signup");
+  const addSignupBtn = document.getElementById("add-signup-btn");
   let genderOpts = DEFAULT_GENDER_OPTIONS;
   let ageOpts = DEFAULT_MENTAL_AGE_OPTIONS;
   let classOpts = DEFAULT_CLASS_OPTIONS;
   let signups = [];
+  addSignupBtn.disabled = true;
 
   function render() {
     container.innerHTML = signups.length
@@ -159,6 +198,31 @@ function setupSignupsEditor() {
     document.getElementById("admin-parking-summary").textContent =
       signups.length ? `${parkingCount} av ${signups.length} behöver parkering` : "";
   }
+
+  function renderNewSignupForm() {
+    newSignupContainer.innerHTML = newSignupFormHtml(genderOpts, ageOpts, classOpts);
+  }
+
+  addSignupBtn.addEventListener("click", async () => {
+    if (addSignupBtn.disabled) return;
+    const fields = newSignupContainer;
+    const person = {
+      nickname: fields.querySelector(".f-nickname").value,
+      age: fields.querySelector(".f-age").value,
+      gender: fields.querySelector(".f-gender").value,
+      hometown: fields.querySelector(".f-hometown").value,
+      attending: fields.querySelector(".f-attending").value,
+      participantClass: fields.querySelector(".f-class").value,
+      parking: fields.querySelector(".f-parking").value,
+      diet: fields.querySelector(".f-diet").value
+    };
+    addSignupBtn.disabled = true;
+    addSignupBtn.textContent = "Lägger till...";
+    await AbborrenDB.addSignups([person], null);
+    addSignupBtn.disabled = false;
+    addSignupBtn.textContent = "Lägg till deltagare";
+    renderNewSignupForm();
+  });
 
   container.addEventListener("click", async (e) => {
     const row = e.target.closest(".admin-signup-row");
@@ -197,6 +261,8 @@ function setupSignupsEditor() {
     ageOpts = a;
     classOpts = c;
     render();
+    renderNewSignupForm();
+    addSignupBtn.disabled = false;
   });
 
   AbborrenDB.subscribeSignups((rows) => {
