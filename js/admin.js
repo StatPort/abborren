@@ -44,6 +44,8 @@ function setupStringListEditor(configKey, defaultValue) {
   const addInput = document.getElementById("add-" + configKey);
   const addBtn = document.querySelector(`.admin-add-btn[data-key="${configKey}"]`);
   let items = [];
+  let loaded = false;
+  addBtn.disabled = true;
 
   function render() {
     listEl.innerHTML = items.map((val, i) => `
@@ -76,6 +78,7 @@ function setupStringListEditor(configKey, defaultValue) {
   });
 
   addBtn.addEventListener("click", () => {
+    if (!loaded) return;
     const val = addInput.value.trim();
     if (!val) return;
     items.push(val);
@@ -86,6 +89,8 @@ function setupStringListEditor(configKey, defaultValue) {
 
   AbborrenDB.getConfig(configKey, defaultValue).then((val) => {
     items = val.slice();
+    loaded = true;
+    addBtn.disabled = false;
     render();
   });
 }
@@ -221,7 +226,10 @@ function pollEditorHtml(poll, index) {
 
 function setupPollsEditor() {
   const container = document.getElementById("admin-polls");
+  const addPollBtn = document.getElementById("add-poll-btn");
   let polls = [];
+  let loaded = false;
+  addPollBtn.disabled = true;
 
   function render() {
     container.innerHTML = polls.map(pollEditorHtml).join("");
@@ -270,7 +278,8 @@ function setupPollsEditor() {
     }
   });
 
-  document.getElementById("add-poll-btn").addEventListener("click", () => {
+  addPollBtn.addEventListener("click", () => {
+    if (!loaded) return;
     polls.push({ id: "poll" + Date.now(), question: "Ny fråga", options: [] });
     render();
     save();
@@ -278,6 +287,8 @@ function setupPollsEditor() {
 
   AbborrenDB.getConfig("polls", DEFAULT_POLLS).then((val) => {
     polls = JSON.parse(JSON.stringify(val));
+    loaded = true;
+    addPollBtn.disabled = false;
     render();
   });
 }
@@ -340,7 +351,10 @@ function qaEditorHtml(item, index) {
 
 function setupQaEditor() {
   const container = document.getElementById("admin-qa");
+  const addQaBtn = document.getElementById("add-qa-btn");
   let items = [];
+  let loaded = false;
+  addQaBtn.disabled = true;
 
   function render() {
     container.innerHTML = items.map(qaEditorHtml).join("");
@@ -370,7 +384,8 @@ function setupQaEditor() {
     }
   });
 
-  document.getElementById("add-qa-btn").addEventListener("click", () => {
+  addQaBtn.addEventListener("click", () => {
+    if (!loaded) return;
     items.push({ question: "Ny fråga", answer: "" });
     render();
     save();
@@ -378,6 +393,8 @@ function setupQaEditor() {
 
   AbborrenDB.getConfig("qa", DEFAULT_QA).then((val) => {
     items = JSON.parse(JSON.stringify(val));
+    loaded = true;
+    addQaBtn.disabled = false;
     render();
   });
 }
