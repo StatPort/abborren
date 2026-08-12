@@ -12,27 +12,27 @@ function personBlockHtml(index) {
   <fieldset class="person-block" data-index="${index}">
     <legend>Deltagare ${index + 1}</legend>
 
-    <label for="nickname-${index}">Nickname</label>
-    <input type="text" id="nickname-${index}" class="f-nickname" required>
+    <label for="nickname-${index}">Namn eller nickname</label>
+    <input type="text" id="nickname-${index}" class="f-nickname">
 
     <label for="age-${index}">Mental ålder</label>
-    <select id="age-${index}" class="f-age" required>
-      <option value="" disabled selected>Välj...</option>
+    <select id="age-${index}" class="f-age">
+      <option value="" selected>Hoppa över</option>
       ${ageOpts}
     </select>
 
     <label for="gender-${index}">Kön</label>
-    <select id="gender-${index}" class="f-gender" required>
-      <option value="" disabled selected>Välj...</option>
+    <select id="gender-${index}" class="f-gender">
+      <option value="" selected>Hoppa över</option>
       ${genderOpts}
     </select>
 
     <label for="hometown-${index}">Orten från vilken du har ditt första minne</label>
-    <input type="text" id="hometown-${index}" class="f-hometown" required>
+    <input type="text" id="hometown-${index}" class="f-hometown">
 
     <label for="attending-${index}">Jag kommer på...</label>
-    <select id="attending-${index}" class="f-attending" required>
-      <option value="" disabled selected>Välj...</option>
+    <select id="attending-${index}" class="f-attending">
+      <option value="" selected>Hoppa över</option>
       <option value="Loppet">Jag kommer på loppet</option>
       <option value="Festen">Jag kommer på festen</option>
       <option value="Båda">Jag kommer på båda</option>
@@ -42,14 +42,14 @@ function personBlockHtml(index) {
     <label for="class-${index}">Välj klass
       <button type="button" class="info-btn class-info-btn" title="Mer info om klasser">i</button>
     </label>
-    <select id="class-${index}" class="f-class" required>
-      <option value="" disabled selected>Välj...</option>
+    <select id="class-${index}" class="f-class">
+      <option value="" selected>Hoppa över</option>
       ${classOpts}
     </select>
 
     <label>Jag behöver parkering</label>
     <div class="radio-row">
-      <label class="radio-row"><input type="radio" name="parking-${index}" class="f-parking" value="Ja" required> Ja</label>
+      <label class="radio-row"><input type="radio" name="parking-${index}" class="f-parking" value="Ja"> Ja</label>
       <label class="radio-row"><input type="radio" name="parking-${index}" class="f-parking" value="Nej"> Nej</label>
     </div>
 
