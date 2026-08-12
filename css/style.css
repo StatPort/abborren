@@ -378,6 +378,11 @@ legend {
   margin-bottom: 8px;
 }
 
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
 table.participant-list {
   width: 100%;
   border-collapse: collapse;
@@ -388,6 +393,15 @@ table.participant-list td {
   text-align: left;
   padding: 8px 10px;
   border-bottom: 1px solid var(--card-border);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  table.participant-list th,
+  table.participant-list td {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
 }
 
 /* ---------- confirmation animation ---------- */
