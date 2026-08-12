@@ -86,12 +86,12 @@ function renderAll(people) {
 
   const rows = document.getElementById("participant-rows");
   rows.innerHTML = people.map((p) => `
-    <tr>
-      <td>${escapeHtml(p.nickname)}</td>
-      <td>${escapeHtml(p.age)}</td>
-      <td>${escapeHtml(p.hometown)}</td>
-      <td>${escapeHtml(p.attending)}</td>
-    </tr>
+    <div class="participant-card">
+      <div class="participant-name">${escapeHtml(p.nickname) || "<em>Namnlös</em>"}</div>
+      <div class="participant-field"><span>Mental ålder:</span> ${escapeHtml(p.age) || "–"}</div>
+      <div class="participant-field"><span>Ort:</span> ${escapeHtml(p.hometown) || "–"}</div>
+      <div class="participant-field"><span>Kommer på:</span> ${escapeHtml(p.attending) || "–"}</div>
+    </div>
   `).join("");
   document.getElementById("empty-msg").style.display = people.length ? "none" : "block";
 }

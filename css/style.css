@@ -378,30 +378,32 @@ legend {
   margin-bottom: 8px;
 }
 
-.table-scroll {
-  width: 100%;
-  overflow-x: auto;
+.participant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
 }
 
-table.participant-list {
-  width: 100%;
-  border-collapse: collapse;
+.participant-card {
+  border: 1.5px solid var(--card-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.35);
 }
 
-table.participant-list th,
-table.participant-list td {
-  text-align: left;
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--card-border);
-  white-space: nowrap;
+.participant-name {
+  font-weight: 700;
+  margin-bottom: 4px;
 }
 
-@media (max-width: 640px) {
-  table.participant-list th,
-  table.participant-list td {
-    padding: 6px 8px;
-    font-size: 0.85rem;
-  }
+.participant-field {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.participant-field span {
+  font-weight: 600;
+  opacity: 1;
 }
 
 /* ---------- confirmation animation ---------- */
