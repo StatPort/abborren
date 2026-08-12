@@ -32,10 +32,10 @@ function pollCardHtml(poll) {
     <div class="poll-form" id="form-${poll.id}">
       ${optionsHtml}
       <div id="extra-${poll.id}"></div>
-      <label class="checkbox-row">
+      <label class="checkbox-row poll-freetext-row">
         <input type="checkbox" class="poll-freetext-checkbox" data-poll="${poll.id}">
-        Fritextsvar:
-        <input type="text" class="poll-freetext-input" data-poll="${poll.id}" placeholder="Skriv ditt eget svar" style="width:auto; flex:1;">
+        Fritext:
+        <input type="text" class="poll-freetext-input" data-poll="${poll.id}" placeholder="Skriv ditt svar">
       </label>
       <button type="button" class="submit-btn poll-vote-btn" data-poll="${poll.id}">Rösta</button>
     </div>
