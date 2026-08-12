@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galleri – Abborren Backyard Ultra 2026</title>
+<link rel="icon" href="../assets/img/logo.png">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="../index.html">&larr; Tillbaka</a>
+    <div class="site-header">
+      <img class="logo" src="../assets/img/logo.png" alt="Abborren logga">
+      <h1>Galleri</h1>
+    </div>
+
+    <div class="card">
+      <h2>Ladda upp en bild</h2>
+      <label for="uploader-name">Ditt namn (valfritt)</label>
+      <input type="text" id="uploader-name" placeholder="Namn">
+      <label for="image-file">Bild</label>
+      <input type="file" id="image-file" accept="image/*" multiple>
+      <button type="button" class="submit-btn" id="upload-btn">Ladda upp</button>
+      <p id="upload-progress" style="display:none;"></p>
+      <p id="upload-error" style="display:none; color: var(--accent-red);"></p>
+    </div>
+
+    <div class="gallery-grid" id="gallery-grid"></div>
+    <p id="gallery-empty-msg" style="display:none;">Inga bilder uppladdade än. Var först!</p>
+    <p id="gallery-error-msg" style="display:none;">Kunde inte hämta galleriet just nu. Prova igen om en liten stund.</p>
+  </div>
+
+  <div class="modal-backdrop" id="lightbox-backdrop">
+    <button class="modal-close" id="lightbox-close">&times;</button>
+    <img id="lightbox-img" class="lightbox-img" src="" alt="">
+  </div>
+
+  <footer class="site-footer">Abborren Backyard Ultra &middot; Est. 2025</footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/config-defaults.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/galleri.js"></script>
+  <a class="pi-btn" href="admin.html" title="Admin">&pi;</a>
+</body>
+</html>

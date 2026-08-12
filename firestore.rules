@@ -13,6 +13,9 @@ service cloud.firestore {
     match /config/{doc} {
       allow read, write: if true;
     }
+    match /galleryImages/{doc} {
+      allow read, write: if true;
+    }
     match /{document=**} {
       allow read, write: if false;
     }

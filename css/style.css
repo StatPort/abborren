@@ -719,3 +719,41 @@ footer.site-footer {
 .pi-btn:hover {
   background: var(--plum);
 }
+
+/* ---------- galleri ---------- */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.gallery-item {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.gallery-thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+}
+
+.gallery-caption {
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 6px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}

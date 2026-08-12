@@ -399,6 +399,38 @@ function setupQaEditor() {
   });
 }
 
+/* ---------- Galleri ---------- */
+
+function galleryAdminItemHtml(item) {
+  const who = item.uploaderName ? escapeHtml(item.uploaderName) : "Okänd";
+  return `
+  <div class="gallery-item" data-id="${item.id}" data-storage-path="${escapeAttr(item.storagePath || "")}">
+    <img src="${item.url}" alt="Bild från ${who}" class="gallery-thumb">
+    <div class="gallery-caption">
+      ${who}
+      <button type="button" class="admin-remove-btn admin-remove-btn-wide admin-remove-gallery" style="margin-top:6px;">Ta bort</button>
+    </div>
+  </div>`;
+}
+
+function setupGalleryEditor() {
+  const grid = document.getElementById("admin-gallery");
+  const emptyMsg = document.getElementById("admin-gallery-empty");
+
+  grid.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("admin-remove-gallery")) {
+      const item = e.target.closest(".gallery-item");
+      if (!confirm("Ta bort den här bilden permanent?")) return;
+      await AbborrenDB.deleteGalleryImage(item.dataset.id, item.dataset.storagePath || null);
+    }
+  });
+
+  AbborrenDB.subscribeGalleryImages((items) => {
+    emptyMsg.style.display = items.length ? "none" : "block";
+    grid.innerHTML = items.map(galleryAdminItemHtml).join("");
+  });
+}
+
 /* ---------- Init ---------- */
 
 let adminInitialized = false;
@@ -412,4 +444,5 @@ function initAdminPanel() {
   setupPollsEditor();
   setupTasksEditor();
   setupQaEditor();
+  setupGalleryEditor();
 }

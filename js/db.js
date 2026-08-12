@@ -10,9 +10,11 @@ const AbborrenDB = (function () {
     typeof firebase !== "undefined";
 
   let db = null;
+  let storage = null;
   if (useFirebase) {
     firebase.initializeApp(FIREBASE_CONFIG);
     db = firebase.firestore();
+    if (firebase.storage) storage = firebase.storage();
   } else {
     console.warn("[AbborrenDB] Firebase ej konfigurerat – använder localStorage som lokalt testläge.");
   }
@@ -289,6 +291,83 @@ const AbborrenDB = (function () {
     });
   }
 
+  // ---------- Galleri ----------
+  async function uploadGalleryImage(file, uploaderName, onProgress) {
+    if (useFirebase && storage) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = "gallery/" + Date.now() + "-" + cryptoRandomId() + "-" + safeName;
+      const ref = storage.ref().child(path);
+      const task = ref.put(file);
+      if (onProgress) {
+        task.on("state_changed", (snap) => {
+          onProgress(snap.bytesTransferred / snap.totalBytes);
+        });
+      }
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Uppladdningen tog för lång tid. Är Firebase Storage aktiverat?")), 30000));
+      await Promise.race([task, timeout]);
+      const url = await ref.getDownloadURL();
+      await db.collection("galleryImages").add({
+        url,
+        storagePath: path,
+        uploaderName: uploaderName || "",
+        uploadedAt: new Date().toISOString()
+      });
+      return url;
+    }
+
+    // Lokalt testläge: spara som base64 data-URL i localStorage.
+    const dataUrl = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+    const current = lsGet("galleryImages", []);
+    current.unshift({
+      id: cryptoRandomId(),
+      url: dataUrl,
+      storagePath: null,
+      uploaderName: uploaderName || "",
+      uploadedAt: new Date().toISOString()
+    });
+    lsSet("galleryImages", current);
+    notify("galleryImages");
+    return dataUrl;
+  }
+
+  function subscribeGalleryImages(callback, onError) {
+    if (useFirebase) {
+      return db.collection("galleryImages").orderBy("uploadedAt", "desc").onSnapshot((snap) => {
+        callback(snap.docs.map((d) => Object.assign({ id: d.id }, d.data())));
+      }, (err) => {
+        console.error("[AbborrenDB] subscribeGalleryImages error:", err);
+        if (onError) onError(err);
+      });
+    }
+    const handler = () => callback(lsGet("galleryImages", []));
+    handler();
+    window.addEventListener("abborren-ls-galleryImages", handler);
+    return () => window.removeEventListener("abborren-ls-galleryImages", handler);
+  }
+
+  async function deleteGalleryImage(id, storagePath) {
+    if (useFirebase) {
+      await db.collection("galleryImages").doc(id).delete();
+      if (storagePath && storage) {
+        try {
+          await storage.ref().child(storagePath).delete();
+        } catch (e) {
+          console.warn("[AbborrenDB] Kunde inte ta bort bildfilen från Storage:", e);
+        }
+      }
+      return;
+    }
+    const current = lsGet("galleryImages", []);
+    lsSet("galleryImages", current.filter((g) => g.id !== id));
+    notify("galleryImages");
+  }
+
   return {
     useFirebase,
     addSignups,
@@ -307,6 +386,9 @@ const AbborrenDB = (function () {
     deleteTask,
     setConfig,
     subscribeConfig,
-    getConfig
+    getConfig,
+    uploadGalleryImage,
+    subscribeGalleryImages,
+    deleteGalleryImage
   };
 })();
