@@ -16,7 +16,7 @@ const MENTAL_AGE_OPTIONS = [
   "Omyndig",
   "Lederna börjar kärva men det går an",
   "Jag gillar lugn och ro",
-  "Tidlös, evig & ålderslös"
+  "Tidlös & evig"
 ];
 
 let personCount = 0;

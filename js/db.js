@@ -4,11 +4,11 @@
  * innan Firebase är kopplat. Samma AbborrenDB-API oavsett bakände.
  */
 const DEFAULT_TASKS = [
-  "Hjälp Matilda att blanda en batch drink",
-  "Hjälp Matilda att blanda en batch drink",
-  "Hjälp Matilda att blanda en batch drink",
-  "Hjälp Matilda att blanda en batch drink",
-  "Hjälp Matilda att blanda en batch drink",
+  "Hjälp Matilda att blanda en batch drinkar",
+  "Hjälp Matilda att blanda en batch drinkar",
+  "Hjälp Matilda att blanda en batch drinkar",
+  "Hjälp Matilda att blanda en batch drinkar",
+  "Hjälp Matilda att blanda en batch drinkar",
   "Läs upp frågorna i quizet",
   "Samla ihop folk till quiz",
   "Plocka disk",

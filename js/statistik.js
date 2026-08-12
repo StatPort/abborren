@@ -7,7 +7,7 @@ const MENTAL_AGE_SHORT = {
   "Omyndig": "Omyndig",
   "Lederna börjar kärva men det går an": "Kärva leder",
   "Jag gillar lugn och ro": "Lugn & ro",
-  "Tidlös, evig & ålderslös": "Tidlös"
+  "Tidlös & evig": "Tidlös & evig"
 };
 
 function shortAge(age) {
