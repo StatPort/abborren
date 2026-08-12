@@ -5,8 +5,9 @@ const MENTAL_AGE_SHORT = {
   "Föddes som pensionär": "Pensionär",
   "Har ett spann på 19-84": "19-84",
   "Omyndig": "Omyndig",
-  "Lederna börjar kärva men det går an.": "Kärva leder",
-  "Jag gillar lugn och ro.": "Lugn & ro"
+  "Lederna börjar kärva men det går an": "Kärva leder",
+  "Jag gillar lugn och ro": "Lugn & ro",
+  "Tidlös, evig & ålderslös": "Tidlös"
 };
 
 function shortAge(age) {

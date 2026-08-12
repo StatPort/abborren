@@ -14,8 +14,9 @@ const MENTAL_AGE_OPTIONS = [
   "Föddes som pensionär",
   "Har ett spann på 19-84",
   "Omyndig",
-  "Lederna börjar kärva men det går an.",
-  "Jag gillar lugn och ro."
+  "Lederna börjar kärva men det går an",
+  "Jag gillar lugn och ro",
+  "Tidlös, evig & ålderslös"
 ];
 
 let personCount = 0;
