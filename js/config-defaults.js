@@ -25,7 +25,7 @@ const DEFAULT_MENTAL_AGE_OPTIONS = [
   "Tidlös & evig"
 ];
 
-const DEFAULT_CLASS_OPTIONS = ["Fun Run", "Backyard", "Stafett"];
+const DEFAULT_CLASS_OPTIONS = ["Fun Run", "Backyard", "Stafett", "Hajk!"];
 
 const DEFAULT_POLLS = [
   {
